@@ -1,69 +1,30 @@
 "use client";
-import { use } from "react";
-import { useEffect, useRef } from "react";
-import dynamic from "next/dynamic";
-import * as Y from "yjs";
-import { WebsocketProvider } from "y-websocket";
-import { MonacoBinding } from "y-monaco";
 
-// load @monaco-editor/react only on client (no SSR)
-const Editor = dynamic(() => import("@monaco-editor/react"), { ssr: false });
+import { useParams } from "next/navigation";
+import { useState } from "react";
+import Editor from "../../component/Editor";
 
-export default function RoomPage({ params }: { params: Promise<{ id: string }> }) {
-  const {id} = use(params);
-  const ydocRef = useRef<Y.Doc | null>(null);
-  const providerRef = useRef<any | null>(null);
-  const bindingRef = useRef<any | null>(null);
+export default function RoomPage() {
+  const params = useParams();
+  const roomId = params.id as string;
 
-  useEffect(() => {
-    // create a Y.Doc and provider when component mounts
-    const ydoc = new Y.Doc();
-    ydocRef.current = ydoc;
-    const wsUrl = process.env.NEXT_PUBLIC_Y_WS_URL ?? "ws://localhost:1234";
-    const provider = new WebsocketProvider(wsUrl, id, ydoc);
-    providerRef.current = provider;
-  
-    // set a tiny local presence (name + color) for demo
-    provider.awareness.setLocalStateField("user", {
-      name: "User-" + Math.floor(Math.random() * 10000),
-      color: "#" + Math.floor(Math.random() * 16777215).toString(16),
-    });
-
-    return () => {
-      // cleanup on unmount
-      try {
-        bindingRef.current?.destroy?.();
-      } catch (e) {}
-      provider.destroy();
-      ydoc.destroy();
-    };
-  }, [id]);
+  const [code, setCode] = useState("// Start coding here...");
 
   return (
-    <div style={{ height: "100vh", width: "100%" }}>
-      <Editor
-        height="100%"
-        defaultLanguage="javascript"
-        defaultValue={`// Welcome to Code Sync!\n// Open this URL in another tab to test.`}
-        onMount={async(editor, monaco) => {
-          const { MonacoBinding } = await import("y-monaco");
-          // when Monaco is ready, wire it to Yjs
-          const ydoc = ydocRef.current;
-          const provider = providerRef.current;
-          if (!ydoc || !provider) return;
+    <div className="flex flex-col min-h-screen bg-gray-900 text-white p-6">
+      <h1 className="text-2xl font-bold mb-4">
+        Room ID: <span className="text-blue-400">{roomId}</span>
+      </h1>
 
-          const yText = ydoc.getText("codemirror"); // shared text
-             const model = editor.getModel();
-          if (!model) return;
-          const binding = new MonacoBinding(
-            yText,
-            model,
-            new Set([editor]),
-            provider.awareness
-          );
-          bindingRef.current = binding;
-        }}
-      />
+      {/* CodeMirror Editor */}
+      <Editor code={code} setCode={setCode} />
+
+      <button
+        className="mt-4 px-6 py-2 bg-green-500 rounded-lg hover:bg-green-600"
+        onClick={() => alert(`Code in Room ${roomId}:\n\n${code}`)}
+      >
+        Save Code
+      </button>
     </div>
   );
 }
