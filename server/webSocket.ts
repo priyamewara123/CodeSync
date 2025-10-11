@@ -1,10 +1,10 @@
 import { createServer } from "http";
 import { Server } from "socket.io";
-
+import {connectDB}  from "./db";
 const PORT = 4000;
-
 // Create HTTP server (Socket.IO needs an HTTP server)
 const httpServer = createServer();
+connectDB();
 
 // Create Socket.IO server
 const io = new Server(httpServer, {

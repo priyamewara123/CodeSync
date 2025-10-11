@@ -7,7 +7,9 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "dev:ws": "ts-node-dev ./server/websocket.ts"
+  "dev:ws": "ts-node-dev --project tsconfig.server.json ./server/webSocket.ts",
+  "dev:db": "ts-node-dev --project tsconfig.server.json ./server/db.ts"
+
   },
   "dependencies": {
     "@codemirror/autocomplete": "^6.19.0",
@@ -22,7 +24,10 @@
     "@codemirror/view": "^6.38.5",
     "@monaco-editor/react": "^4.7.0",
     "@uiw/react-codemirror": "^4.25.2",
+    "dotenv": "^17.2.3",
+    "ioredis": "^5.8.1",
     "monaco-editor": "^0.53.0",
+    "mongoose": "^8.19.1",
     "next": "15.5.4",
     "next-auth": "^4.24.11",
     "react": "19.1.0",
