@@ -44,9 +44,15 @@ export default function RoomPage() {
       </h1>
 
       <Editor code={code} setCode={handleCodeChange} />
+       <button
+        className="mt-8 px-6 py-2 bg-green-500 rounded-lg hover:bg-green-600"
+        onClick={() => alert(`Code in Room ${roomId}:\n\n${code}`)}
+      >
+        Save Code
+      </button>
     </div>
 
-
+ 
   );
 }
 

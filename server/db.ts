@@ -1,17 +1,14 @@
-// server/db.ts
 import mongoose from "mongoose";
-import dotenv from "dotenv";
-dotenv.config();
+
 export const connectDB = async () => {
-    console.log("fgjhgkedkl");
-    
-    console.log("Connecting to MongoDB...", process.env.MONGO_URI);
-    
   try {
-    const mongoURI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017";
+    const mongoURI = process.env.MONGODB_URI as string;
+    if (!mongoURI) throw new Error("MONGODB_URI not found in .env");
+
     await mongoose.connect(mongoURI);
     console.log("✅ MongoDB connected successfully");
-  } catch (error) {
-    console.error("❌ MongoDB connection error:", error);
+  } catch (err) {
+    console.error("❌ MongoDB connection failed:", err);
+    process.exit(1);
   }
 };
