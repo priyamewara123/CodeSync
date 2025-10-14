@@ -7,7 +7,6 @@ export default function HomePage() {
   const router = useRouter();
   const [roomId, setRoomId] = useState("");
 
-  // Function to join/create a room
   const handleJoin = () => {
     if (roomId.trim()) {
       router.push(`/room/${roomId}`);

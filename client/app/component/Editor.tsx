@@ -5,7 +5,6 @@ import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { EditorView } from "@codemirror/view";
 import { autocompletion } from "@codemirror/autocomplete";
-// import { bracketMatching } from "@codemirror/matchbrackets";
 
 type EditorProps = {
   code: string;
@@ -20,10 +19,9 @@ export default function Editor({ code, setCode }: EditorProps) {
         height="500px"
         theme="dark"
         extensions={[
-          javascript({ jsx: true }), // syntax highlighting for JS/JSX
-          EditorView.lineWrapping,   // line wrapping
-          autocompletion(),          // auto-complete support
-          // bracketMatching(),         // highlight matching brackets
+          javascript({ jsx: true }), 
+          EditorView.lineWrapping,  
+          autocompletion(),                
         ]}
         onChange={(value) => setCode(value)}
       />

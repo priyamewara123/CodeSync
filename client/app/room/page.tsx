@@ -20,7 +20,7 @@ export default function RoomPage() {
       socketClient.emit("joinRoom", roomId);
     });
 
-    // Listen for code updates from other clients
+ 
     socketClient.on("receiveCode", (newCode: string) => {
       setCode(newCode);
     });
