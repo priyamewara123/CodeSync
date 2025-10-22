@@ -5,18 +5,18 @@ import dotenv from "dotenv";
 import { connectDB } from "./db.js";
 import { redisClient } from "./redis.js";
 import { Room } from "./model/Room.js";
+import app from "./app.js";
 
 dotenv.config();
-
-const app = express();
+// const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: { origin: "*" },
 });
 
-const PORT = process.env.PORT || 4000;
 
-// MongoDB connect
+
+const PORT = process.env.PORT || 4000;
 connectDB();
 
 // Socket.IO events
