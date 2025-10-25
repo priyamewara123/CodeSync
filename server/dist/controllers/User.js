@@ -1,9 +1,10 @@
 import { User } from "../model/User.js";
+import bcrypt from "bcryptjs";
 export const signupUser = async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { name, email, hashpassword } = req.body;
         // 1️⃣ Check required fields
-        if (!name || !email || !password) {
+        if (!name || !email || !hashpassword) {
             res.status(400).json({ error: "All fields are required" });
             return;
         }
@@ -13,8 +14,14 @@ export const signupUser = async (req, res) => {
             res.status(409).json({ error: "User already exists with this email" });
             return;
         }
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(hashpassword, saltRounds);
         // 3️⃣ Create new user
-        const newUser = new User({ name, email, password });
+        const newUser = new User({
+            name,
+            email,
+            hashpassword: hashedPassword,
+        });
         await newUser.save();
         // 4️⃣ Send success response
         res.status(201).json({
