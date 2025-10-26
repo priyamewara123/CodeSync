@@ -6,6 +6,8 @@ import { connectDB } from "./db.js";
 import { redisClient } from "./redis.js";
 import { Room } from "./model/Room.js";
 import app from "./app.js";
+import cookieParser from "cookie-parser";
+import cors from "cors";
 
 dotenv.config();
 // const app = express();
@@ -18,6 +20,7 @@ const io = new Server(server, {
 
 const PORT = process.env.PORT || 4000;
 connectDB();
+
 
 // Socket.IO events
 io.on("connection", (socket) => {
