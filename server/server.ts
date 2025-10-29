@@ -15,7 +15,10 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: { origin: "*" },
 });
-
+app.use(cors({
+  origin: "http://localhost:3000", // your frontend
+  credentials: true, // allow cookies to be sent
+}));
 
 
 const PORT = process.env.PORT || 4000;

@@ -5,12 +5,17 @@ import { connectDB } from "./db.js";
 import { redisClient } from "./redis.js";
 import { Room } from "./model/Room.js";
 import app from "./app.js";
+import cors from "cors";
 dotenv.config();
 // const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: { origin: "*" },
 });
+app.use(cors({
+    origin: "http://localhost:3000", // your frontend
+    credentials: true, // allow cookies to be sent
+}));
 const PORT = process.env.PORT || 4000;
 connectDB();
 // Socket.IO events
